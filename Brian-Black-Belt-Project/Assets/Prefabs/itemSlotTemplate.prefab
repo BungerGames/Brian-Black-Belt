@@ -223,6 +223,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pulseScale: 1.2
   scaleSpeed: 10
+  backgroundImage: {fileID: 5671373707564726227}
+  normalColor: {r: 0, g: 0, b: 0, a: 0.60784316}
+  selectionHighlight: {r: 0, g: 0.60784316, b: 1, a: 1}
 --- !u!1 &8277567485541784556
 GameObject:
   m_ObjectHideFlags: 0

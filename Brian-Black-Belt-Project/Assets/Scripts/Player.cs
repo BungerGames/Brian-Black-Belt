@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        inventory = new Inventory(5, 4);
+        inventory = new Inventory(5, 5);
 
         uiInventory.SetInventory(inventory);
 
@@ -25,6 +25,22 @@ public class Player : MonoBehaviour
         {
             ToggleUI();
         }
+
+        for (int i = 0; i < 5; i++)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i))
+            {
+                Debug.Log("Pressed hotbar key: " + i);
+                uiInventory.SelectHotbarSlot(i);
+            }
+        }
+
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (scroll > 0f)
+            uiInventory.SelectHotbarSlot((uiInventory.GetSelectedHotbarX() - 1 + 5) % 5);
+        else if (scroll < 0f)
+            uiInventory.SelectHotbarSlot((uiInventory.GetSelectedHotbarX() + 1) % 5);
+
     }
 
     public void OpenInventory()
@@ -42,6 +58,8 @@ public class Player : MonoBehaviour
         bool currentState = InvCanv.activeSelf;
 
         InvCanv.SetActive(!currentState);
+
+        Debug.Log("Toggled. New state: " + InvCanv.activeSelf + " | Cursor lock: " + (!currentState ? "None" : "Locked"));
 
         if (!currentState)
         {

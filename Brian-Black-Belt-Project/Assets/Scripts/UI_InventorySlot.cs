@@ -18,6 +18,10 @@ public class UI_InventorySlot :
     [Header("Hover/Click Feel")]
     [SerializeField] private float pulseScale = 1.2f;
     [SerializeField] private float scaleSpeed = 10f;
+    [Header("Selection")]
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private Color normalColor = new Color32(0, 0, 0, 155);
+    [SerializeField] private Color selectionHighlight = new Color32(0x00, 0x9B, 0xFF, 0xFF);
 
     private int gridX;
     private int gridY;
@@ -76,6 +80,8 @@ public class UI_InventorySlot :
         }
     }
 
+    
+
     public void Refresh(
         InventorySlot inventorySlot)
     {
@@ -103,8 +109,15 @@ public class UI_InventorySlot :
         {
             amountText.text = "";
         }
-    }
 
+
+    }
+    public void SetSelected(bool selected)
+    {
+        Debug.Log($"SetSelected({selected}) called on slot, backgroundImage null? {backgroundImage == null}");
+        if (backgroundImage != null)
+            backgroundImage.color = selected ? selectionHighlight : normalColor;
+    }
     public void OnBeginDrag(
         PointerEventData eventData)
     {
@@ -178,9 +191,12 @@ public class UI_InventorySlot :
     private UI_InventorySlot GetTargetSlot(
         PointerEventData eventData)
     {
-        GameObject target =
-            eventData.pointerCurrentRaycast
-                .gameObject;
+
+        GameObject target = 
+            eventData.pointerCurrentRaycast.gameObject;
+        Debug.Log("Drop target: " + (target != null ? target.name : "NULL"));
+        if (target == null) return null;
+        
 
         if (target == null)
             return null;
