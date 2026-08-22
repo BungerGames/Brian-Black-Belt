@@ -6,9 +6,12 @@ public class Player : MonoBehaviour
 
     public GameObject cam;
     public GameObject InvCanv;
-
+    public Inventory GetInventory() => inventory;
     private Inventory inventory;
+    [Header("Dropping")]
+    [SerializeField] private Transform dropPoint; // empty object slightly in front of camera
 
+    
     private void Start()
     {
         inventory = new Inventory(5, 5);
@@ -21,6 +24,10 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q))
+            DropSelectedHotbarItem();
+
+
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             ToggleUI();
@@ -52,7 +59,17 @@ public class Player : MonoBehaviour
     {
         InvCanv.SetActive(false);
     }
+    public void DropSelectedHotbarItem()
+    {
+        InventorySlot slot = uiInventory.GetSelectedHotbarSlot();
+        if (slot == null || slot.item == null) return;
 
+        Item droppedItem = new Item { itemType = slot.item.itemType, amount = slot.item.amount };
+
+        ItemWorld.SpawnItemWorld(dropPoint.position, droppedItem);
+
+        uiInventory.RemoveSelectedHotbarItem();
+    }
     public void ToggleUI()
     {
         bool currentState = InvCanv.activeSelf;

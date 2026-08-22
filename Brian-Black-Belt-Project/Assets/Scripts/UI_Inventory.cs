@@ -35,7 +35,10 @@ public class UI_Inventory : MonoBehaviour
         CreateInventoryUI();
         RefreshInventoryUI();
     }
-
+    public void RemoveSelectedHotbarItem()
+    {
+        inventory.RemoveItem(selectedHotbarX, HotbarRow);
+    }
     private void CreateInventoryUI()
     {
         if (slotPrefab == null || slotContainer == null || hotbarRowContainer == null)
